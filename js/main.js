@@ -154,16 +154,16 @@ function setMap(){
     var path = d3.geo.path()
         .projection(projection);
     
-    queue()
-        .defer(d3.csv, "../data/grades.csv")
-        .defer(d3.csv, "../data/prohibitedAfter.csv")
-        .defer(d3.csv, "../data/counseling.csv")
-        .defer(d3.csv, "../data/waitingPeriod.csv")
-        .defer(d3.csv, "../data/consent.csv")
-        .defer(d3.csv, "../data/ultrasound.csv")
-        .defer(d3.json, "../data/usa.topojson")
-        .defer(d3.json, "../data/CPCs.geojson")
-        .defer(d3.json, "../data/AbortionProviders.geojson")
+    d3.queue()
+        //.defer(d3.csv, "../data/grades.csv")
+        //.defer(d3.csv, "../data/prohibitedAfter.csv")
+        //.defer(d3.csv, "../data/counseling.csv")
+        //.defer(d3.csv, "../data/waitingPeriod.csv")
+        //.defer(d3.csv, "../data/consent.csv")
+        .defer(d3.csv, "data/LVtoJoin.csv")
+        .defer(d3.json, "data/us-states.json")
+        //.defer(d3.json, "../data/CPCs.geojson")
+        //.defer(d3.json, "data/AbortionProviders.geojson")
         .await(callback);
     
     //creates menu [overview starts on load]
@@ -173,7 +173,7 @@ function setMap(){
     function callback(error, grade, prohibitedAfter, counseling, waitingPeriod, consent, ultrasound, usa, cpc, abortionprovider){
 
         //Variable to store the USA json with all attribute data
-        joinedJson = topojson.feature(usa, usa.objects.states).features;
+        joinedJson = topojson.feature(usa, usa.objects.USA).features;
         colorize = colorScale(joinedJson);
 
         //Create an Array with CSV's loaded
@@ -186,7 +186,7 @@ function setMap(){
         };
 
         function LinkData(topojson, csvData, attribute){
-             var jsonStates = usa.objects.states.geometries;
+             var jsonStates = usa.objects.USA.geometries;
 
             //loop through the csv and tie it to the json's via the State Abbreviation
              for(var i=0; i<csvData.length; i++){
